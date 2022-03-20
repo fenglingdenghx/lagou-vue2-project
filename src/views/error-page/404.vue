@@ -1,0 +1,13 @@
+<template>
+  <div>404page</div>
+</template>
+<script lang="ts">
+import Vue from 'vue'
+export default Vue.extend({
+  name: '404'
+})
+</script>
+
+<style>
+
+</style>
