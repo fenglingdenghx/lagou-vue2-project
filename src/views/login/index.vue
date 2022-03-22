@@ -27,13 +27,8 @@
 <script lang="ts ">
 // vue
 import Vue from 'vue'
-// request
-import request from '@/utils/request.ts'
-// element type
-import { Form } from 'element-ui'
-
-// qs
-import qs from 'qs'
+// services
+import { login } from '@/services/user.ts'
 export default Vue.extend({
   name: 'Login',
   data () {
@@ -82,22 +77,17 @@ export default Vue.extend({
         this.isLoginLoading = true
         try {
           // 2. 验证通过 -> 提交表单
-          const { data } = await request({
-            url: '/front/user/login',
-            method: 'post',
-            data: qs.stringify(this.form),
-            headers: {
-              'content-type': 'application/x-www-form-urlencoded'
-            }
-          })
+          const { data } = await login(this.form)
           // 3. 处理请求结果
           // 失败：给出提示
           if (data.state !== 1) {
-            return this.$message.error(data.message)
+            this.$message.error(data.message)
+          } else {
+            this.$store.commit('setUser', data.content)
+            // 成功：跳转至首页
+            this.$message.success('登录成功')
+            this.$router.push('/')
           }
-          // 成功：跳转至首页
-          this.$message.success('登录成功')
-          this.$router.push('/')
         } finally {
           this.isLoginLoading = false
         }
