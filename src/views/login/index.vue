@@ -86,7 +86,7 @@ export default Vue.extend({
             this.$store.commit('setUser', data.content)
             // 成功：跳转至首页
             this.$message.success('登录成功')
-            this.$router.push('/')
+            this.$router.push(this.$route.query.redirect || '/')
           }
         } finally {
           this.isLoginLoading = false

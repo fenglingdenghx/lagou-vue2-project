@@ -11,20 +11,47 @@
         <el-avatar
         shape="square"
         :size="50"
-        src="https://cube.elemecdn.com/9/c2/f0ee8a3c7c9638a54940382568c9dpng.png"></el-avatar>
+        :src="userinfo.portrait"></el-avatar>
         <i class="el-icon-arrow-down el-icon--right"></i>
       </span>
       <el-dropdown-menu slot="dropdown">
-        <el-dropdown-item>当前用户id</el-dropdown-item>
-        <el-dropdown-item divided>退出</el-dropdown-item>
+        <el-dropdown-item>{{userinfo.userName}}</el-dropdown-item>
+        <el-dropdown-item
+        divided
+        @click.native="handleLogout"
+        >退出</el-dropdown-item>
       </el-dropdown-menu>
     </el-dropdown>
   </div>
 </template>
 <script lang="ts">
+// services
+import { getUserInfo } from '@/services/user'
+// vue
 import Vue from 'vue'
 export default Vue.extend({
-  name: 'AppHeader'
+  name: 'AppHeader',
+  data () {
+    return {
+      userinfo: {}
+    }
+  },
+  created () {
+    this.loadUserInfo()
+    this.loadUserInfo()
+  },
+  methods: {
+    handleLogout () {
+      this.$store.commit('setUser', null)
+      this.$router.push({
+        name: 'login'
+      })
+    },
+    async  loadUserInfo () {
+      const res = await getUserInfo()
+      this.userinfo = res.data.content
+    }
+  }
 })
 </script>
 <style scoped lang='scss'>

@@ -17,3 +17,10 @@ export const login = (data: User) => {
     data: qs.stringify(data)
   })
 }
+
+export const getUserInfo = () => {
+  return request({
+    url: '/front/user/getInfo',
+    method: 'get'
+  })
+}
