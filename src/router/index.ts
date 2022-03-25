@@ -45,6 +45,11 @@ const routes: Array<RouteConfig> = [
 
       },
       {
+        path: '/menu/:id/edit',
+        name: 'menu-edit',
+        component: () => import(/* webpaclChunkName:'menu-edit' */ '@/views/menu/edit.vue')
+      },
+      {
         path: '/role',
         name: 'role',
         component: () => import(/* webpaclChunkName:'role' */ '@/views/role/index.vue')
