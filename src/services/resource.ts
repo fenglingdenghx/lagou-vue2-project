@@ -10,3 +10,10 @@ export const getResourcePages = (data: any): Promise<any> => {
     data
   })
 }
+
+export const getAllResources = () => {
+  return request({
+    url: '/boss/resource/category/getAll',
+    method: 'get'
+  })
+}

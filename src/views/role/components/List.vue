@@ -9,7 +9,7 @@
           <el-button type="primary" @click="onSubmit">查询</el-button>
         </el-form-item>
       </el-form>
-      <el-button @click="dialogVisible = true">添加角色</el-button>
+      <el-button @click="handleAdd">添加角色</el-button>
       <el-table
         :data="roles"
         border
@@ -61,11 +61,13 @@
       </el-table>
     </el-card>
     <el-dialog
-      title="添加角色"
+      :title="isEdit ? '编辑角色' : '添加角色'"
       :visible.sync="dialogVisible"
       width="30%"
     >
     <role-create-or-edit
+      v-if="dialogVisible"
+      :is-edit="isEdit"
       :roleId="roleId"
       @cancel="dialogVisible = false"
       @success="onSuccess"
@@ -80,17 +82,6 @@ import Vue from 'vue'
 import { getRoleAll, deleteRole } from '@/services/role'
 // components
 import RoleCreateOrEdit from './CreateOrEdit.vue'
-interface TableItem {
-  code:string
-  createdBy:string
-  createdTime: string
-  description:string
-  id: number
-  name: string
-  operatorId?: null
-  updatedBy: string
-  updatedTime: string
-}
 export default Vue.extend({
   name: 'RoleList',
   components: { RoleCreateOrEdit },
@@ -101,7 +92,8 @@ export default Vue.extend({
       },
       roles: [],
       dialogVisible: false,
-      roleId: ''
+      roleId: '',
+      isEdit: false
     }
   },
   created () {
@@ -119,20 +111,34 @@ export default Vue.extend({
     onSubmit () {
       this.loadRoleAll()
     },
+    handleAdd () {
+      this.isEdit = false
+      this.dialogVisible = true
+    },
     handleEdit (item:any) {
+      this.isEdit = true
       this.dialogVisible = true
       this.roleId = item.id
-      console.log('edit')
     },
-    async  handleDelete (item:TableItem) {
+    async  handleDelete (item:any) {
       await deleteRole(item.id)
       this.loadRoleAll()
     },
-    handleMenu (item:TableItem) {
-      console.log('menu ')
+    handleMenu (item:any) {
+      this.$router.push({
+        name: 'alloc-menu',
+        params: {
+          roleId: item.id
+        }
+      })
     },
-    handleResource (item:TableItem) {
-      console.log('resource')
+    handleResource (item:any) {
+      this.$router.push({
+        name: 'alloc-resource',
+        params: {
+          roleId: item.id
+        }
+      })
     }
   }
 })

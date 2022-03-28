@@ -20,7 +20,7 @@
 <script lang="ts">
 import Vue from 'vue'
 // services
-import { createOrUpdate } from '@/services/role'
+import { createOrUpdate, getRoleById } from '@/services/role'
 export default Vue.extend({
   name: 'RoleCreateOrEdit',
   props: {
@@ -43,10 +43,14 @@ export default Vue.extend({
   },
   created () {
     if (this.isEdit) {
-
+      this.loadRole()
     }
   },
   methods: {
+    async loadRole () {
+      const { data } = await getRoleById(this.roleId)
+      this.form = data.data
+    },
     async  onSubmit () {
       await createOrUpdate(this.form)
       this.$emit('success')

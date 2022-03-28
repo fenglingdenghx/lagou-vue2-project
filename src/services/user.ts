@@ -24,3 +24,11 @@ export const getUserInfo = () => {
     method: 'get'
   })
 }
+
+export const getUsers = (data:any) => {
+  return request({
+    url: '/boss/user/getUserPages',
+    data,
+    method: 'post'
+  })
+}
